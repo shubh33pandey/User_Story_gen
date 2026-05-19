@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Story Generator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Spec Kit AI Agent</p>
+      <h1>Generate and preview user story markdown</h1>
+      <p class="subtitle">
+        Send a question
+        
+      </p>
+    </section>
+
+    <section class="card controls">
+      <label for="question">Requirement / feature request</label>
+      <textarea id="question" rows="5" placeholder="Example: Generate user stories for a login feature with forgot password and MFA"></textarea>
+      <div class="actions">
+        <button id="generateBtn">Generate User Story</button>
+        <button id="refreshBtn" class="secondary">Refresh Markdown</button>
+      </div>
+      <p id="status" class="status">Start FastAPI on port 8000, then generate or refresh.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="panel-title">
+          <h2>Preview</h2>
+          <span>Rendered markdown</span>
+        </div>
+        <div id="preview" class="preview empty">No markdown loaded yet.</div>
+      </article>
+
+      <article class="card">
+        <div class="panel-title">
+          <h2>Markdown</h2>
+          <span>Raw file content</span>
+        </div>
+        <pre id="raw" class="raw">No markdown loaded yet.</pre>
+      </article>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
