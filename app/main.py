@@ -5,91 +5,33 @@ from app.graph.workflow import create_graph
 from fastapi import FastAPI
 from app.API.routes import router
 from app.Infrastrature.embeddings.embedding_model import (generate_embedding,get_constitution_chunks, rank_chunks)
+import json
+import socket
+import threading
+import time
+import traceback
+
+from datetime import datetime, timezone
+from app.utils.logger import logger
 
 
 api = FastAPI()
 
 api.include_router(router)
 
-# async def chat():
-
-#     # Create graph app
-#     app = create_graph()
-
-#     print("\n====================================")
-#     print("        SPEC KIT AI AGENT")
-#     print("====================================")
-
-#     print("\nType 'exit' to quit.\n")
-
-#     while True:
-
-#         # User input
-#         user_input = input("\nYou: ")
-
-#         # Exit condition
-#         if user_input.lower() in ["exit", "quit"]:
-#             print("\nGoodbye 👋")
-#             break
-
-#         # Initial state
-#         initial_state = {
-#             "user_input": user_input,
-#             "retrieved_context": "",
-#             "constitution": "",
-#             "specification": "",
-#             "planning": "",
-#             "task": "",
-#             "user_story": ""
-#         }
-
-#         try:
-#             config = {
-#                 "configurable": {
-#                     "thread_id": f"user-session-{uuid4()}"
-#                 }
-#             }
-
-#             # Run graph
-#             result = await app.ainvoke(
-#                 initial_state,
-#                 config=config
-#             )
-
-#             print("\n====================================")
-#             print("CONSTITUTION")
-#             print("====================================")
-#             print(result.get("constitution", ""))
-
-#             print("\n====================================")
-#             print("SPECIFICATION")
-#             print("====================================")
-#             print(result.get("specification", ""))
-
-#             # print("\n====================================")
-#             # print("PLANNING")
-#             # print("====================================")
-#             # print(result.get("planning", ""))
-
-#             # print("\n====================================")
-#             # print("TASK")
-#             # print("====================================")
-#             # print(result.get("task", ""))
-
-#             print("\n====================================")
-#             print("USER STORY")
-#             print("====================================")
-#             print(result.get("user_story", ""))
-
-#         except Exception as e:
-
-#             print("\nERROR:")
-#             print(str(e))
+LOGGER_API = "https://vibeappop.saa.ai/EnterpriseLogging/api/Logs"
 
 
-# if __name__ == "__main__":
-#     asyncio.run(chat())
 
+#safe logger wrapper to prevent logging failures from impacting main workflow
+def safe_logger(**kwargs):
+
+    try:
+        return logger(**kwargs)
+    except Exception as exc:
+        print(f"\nLogger API failed: {exc}")
+        return None
+    
 
 
 async def chat():
@@ -114,6 +56,63 @@ async def chat():
             break
 
         try:
+            start_time = time.time()
+
+            session_id = str(uuid4())
+            correlation_id = str(uuid4())
+            request_id = str(uuid4())
+            log_id=str((uuid4()))
+
+            safe_logger(
+                api_url=LOGGER_API,
+
+                logId=log_id,
+
+                timestampUtc=datetime.now(
+                    timezone.utc
+                ).isoformat(),
+
+                logLevel=2,
+
+                message="User request received",
+
+                eventType="UserPromptReceived",
+
+                sourceApplication="User_Story_gen",
+
+                sourceModule="Main",
+
+                environment="Development",
+
+                userId="",
+
+                sessionId=session_id,
+
+                correlationId=correlation_id,
+
+                requestId=request_id,
+
+                machineName=socket.gethostname(),
+
+                threadId=str(threading.get_ident()),
+
+                exceptionMessage=None,
+
+                stackTrace=None,
+
+                metadata={
+                    "workflow": "spec-kit"
+                },
+
+                durationMs=int((time.time() - start_time) * 1000),
+
+                isSuccess=True,
+
+                payloadJson=json.dumps({
+                    "user_input": user_input
+                    
+                })
+            )
 
             # -----------------------------------
             # STEP 1: Generate user embedding
@@ -174,6 +173,58 @@ Text:
                 config=config
             )
 
+            duration_ms = int(
+                (time.time() - start_time) * 1000
+            )
+
+            safe_logger(
+                api_url=LOGGER_API,
+
+                logId=log_id,
+
+                timestampUtc=datetime.now(
+                    timezone.utc
+                ).isoformat(),
+
+                logLevel=2,
+
+                message="Workflow completed successfully",
+
+                eventType="WorkflowCompleted",
+
+                sourceApplication="Spec-Kit-AI",
+
+                sourceModule="Workflow",
+
+                environment="Development",
+
+                userId="",
+
+                sessionId=session_id,
+
+                correlationId=correlation_id,
+
+                requestId=request_id,
+
+                machineName=socket.gethostname(),
+
+                threadId=str(threading.get_ident()),
+
+                exceptionMessage=None,
+
+                stackTrace=None,
+
+                metadata={
+                    "durationMs": duration_ms
+                },
+
+                durationMs=duration_ms,
+
+                isSuccess=True,
+
+                payloadJson=json.dumps(result)
+            )
+
             print("\n====================================")
             print("RETRIEVED CONTEXT")
             print("====================================")
@@ -195,6 +246,60 @@ Text:
             print(result.get("user_story", ""))
 
         except Exception as e:
+
+            duration_ms = int(
+                (time.time() - start_time) * 1000
+            )
+
+            safe_logger(
+                api_url=LOGGER_API,
+
+                logId=log_id,
+
+                timestampUtc=datetime.now(
+                    timezone.utc
+                ).isoformat(),
+
+                logLevel=4,
+
+                message="Workflow execution failed",
+
+                eventType="WorkflowError",
+
+                sourceApplication="Spec-Kit-AI",
+
+                sourceModule="Workflow",
+
+                environment="Development",
+
+                userId="",
+
+                sessionId=session_id,
+
+                correlationId=correlation_id,
+
+                requestId=request_id,
+
+                machineName=socket.gethostname(),
+
+                threadId=str(threading.get_ident()),
+
+                exceptionMessage=str(e),
+
+                stackTrace=traceback.format_exc(),
+
+                metadata={
+                    "durationMs": duration_ms
+                },
+
+                durationMs=duration_ms,
+
+                isSuccess=False,
+
+                payloadJson=json.dumps({
+                    "user_input": user_input
+                })
+            )
 
             print("\nERROR:")
             print(str(e))

@@ -1,271 +1,318 @@
 Here is the professional feature specification markdown document:
 
----
-
+```markdown
 # Feature Overview
-The AI Platform is a production-grade system designed to deliver enterprise-scale agent orchestration, vector search, prompt routing, workflow automation, and conversational AI capabilities. This platform enables autonomous multi-agent collaboration, semantic document retrieval, dynamic prompt management, event-driven automation, and context-aware conversational interfaces. The system is built for scalability, security, and observability, adhering to enterprise-grade engineering standards.
-
----
+The Scrum Interface is a centralized system that integrates with Jira, GitHub, and MongoDB to provide a unified platform for managing Scrum workflows. This feature enables the ingestion of tasks and user stories from Jira, artifact management (code snippets, design documents, test screenshots), GitHub code linking, bug tracking, user assignments, and test documentation. The system will streamline Agile development by consolidating scattered tools into a single interface with real-time synchronization and predictive time tracking.
 
 # Business Objective
-1. Enable autonomous AI-driven decision-making through multi-agent orchestration.
-2. Provide high-precision semantic search and retrieval-augmented generation (RAG) for enterprise knowledge bases.
-3. Optimize LLM interactions via dynamic prompt routing and chaining.
-4. Automate complex workflows with event-driven AI task execution.
-5. Deliver seamless conversational AI experiences with memory management and session handling.
-6. Reduce time-to-market for AI-driven applications through modular, reusable components.
-7. Ensure compliance with enterprise security, privacy, and governance policies.
-
----
+- Improve Scrum team productivity by reducing context-switching between Jira, GitHub, and documentation tools.
+- Enhance traceability by linking user stories to code, artifacts, and test documentation.
+- Enable data-driven sprint planning with predicted vs. actual time tracking.
+- Standardize artifact management (code snippets, design docs, screenshots) for better knowledge retention.
+- Provide a single source of truth for Scrum-related data with real-time Jira synchronization.
+- Reduce manual effort in test documentation by automating screenshot and bug log associations.
 
 # Functional Requirements
+1. **Jira Integration**
+   - Sync Epics, User Stories, Tasks, and Bugs from Jira to MongoDB.
+   - Support real-time updates via Jira webhooks.
+   - Retrieve project metadata (sprints, assignees, priorities) from Jira.
+   - Allow filtering of Jira data by sprint, status, assignee, or project.
 
-## Agent Orchestration
-1. Support creation and management of multiple autonomous AI agents with distinct roles and tools.
-2. Enable tool calling and reflection loops for agent self-improvement.
-3. Facilitate inter-agent communication and collaboration.
-4. Provide APIs for agent lifecycle management (creation, suspension, termination).
-5. Support dynamic task assignment and execution monitoring.
+2. **User Story Management**
+   - Store user stories with metadata (title, description, status, assignee, sprint, epic).
+   - Link user stories to associated tasks, bugs, artifacts, and GitHub code.
+   - Track predicted and actual time spent on user stories.
+   - Support status transitions (e.g., "To Do" → "In Progress" → "Done").
 
-## Vector Search and RAG
-1. Ingest and chunk documents from multiple formats (PDF, DOCX, TXT, HTML).
-2. Generate embeddings using configurable models (e.g., Sentence-BERT, OpenAI).
-3. Store and retrieve vectors in a scalable vector database (Qdrant/FAISS/ChromaDB).
-4. Implement hybrid retrieval combining vector and keyword search (BM25).
-5. Support metadata filtering and semantic ranking of results.
-6. Provide APIs for document ingestion, embedding generation, and query execution.
+3. **Artifact Management**
+   - Store code snippets, design documents, and test screenshots with versioning.
+   - Categorize artifacts by type (code, design, test) and associate them with user stories.
+   - Enable search and filtering of artifacts by user story, sprint, or assignee.
+   - Support file uploads and retrieval via API.
 
-## Prompt Routing
-1. Manage dynamic prompt templates with variable injection.
-2. Enable context-aware prompt chaining for multi-step reasoning.
-3. Support prompt versioning and A/B testing.
-4. Provide evaluation metrics for prompt performance (accuracy, relevance, latency).
-5. Integrate with LLM APIs (OpenAI, Anthropic) for response generation.
+4. **GitHub Integration**
+   - Link GitHub commits, pull requests, and branches to user stories.
+   - Automatically update user story status based on GitHub events (e.g., PR merged).
+   - Enforce branch naming conventions (e.g., `feature/US-123-add-login`).
 
-## Workflow Automation
-1. Define and execute event-driven AI workflows.
-2. Support conditional branching and parallel task execution.
-3. Provide monitoring and logging for workflow execution.
-4. Enable integration with external systems via webhooks and APIs.
-5. Support retry mechanisms and failure handling.
+5. **Bug and Issue Tracking**
+   - Store bugs linked to user stories with severity, status, and assignee.
+   - Associate screenshots and descriptions with bugs for documentation.
+   - Allow filtering of bugs by user story, sprint, or assignee.
 
-## Conversational AI
-1. Deliver context-aware chat interfaces with memory management.
-2. Handle session persistence and user state across interactions.
-3. Support multi-turn conversations with follow-up question handling.
-4. Provide AI copilot interfaces for task assistance.
-5. Enable real-time communication via WebSocket.
+6. **Test Documentation**
+   - Store test screenshots with descriptions and associate them with test cases or user stories.
+   - Support versioning of test artifacts.
+   - Enable search and filtering of test documentation by user story or bug ID.
 
----
+7. **User Assignment and Time Tracking**
+   - Assign user stories and tasks to team members.
+   - Track predicted vs. actual time spent on tasks and user stories.
+   - Generate sprint-wise effort reports.
+   - Map task dependencies (e.g., blocked tasks, prerequisites).
+
+8. **Epic and Project Management**
+   - Retrieve and store Epic metadata from Jira (title, description, status).
+   - Associate user stories with Epics and projects.
+   - Support filtering of user stories by Epic or project.
 
 # Non Functional Requirements
+1. **Scalability**
+   - MongoDB schema must support 10,000+ user stories and artifacts without performance degradation.
+   - API endpoints must handle concurrent requests (100+ RPS) with low latency (< 500ms).
 
-## Scalability
-1. Support horizontal scaling for all core components (agents, vector DB, APIs).
-2. Handle concurrent user sessions and high query volumes without degradation.
-3. Ensure vector database can scale to millions of embeddings.
+2. **Performance**
+   - Jira data sync must complete within 5 minutes for 1,000+ items.
+   - Artifact upload and retrieval must not exceed 2 seconds for files < 10MB.
+   - GitHub linking must update user story status within 1 second of a webhook event.
 
-## Availability
-1. Achieve 99.9% uptime for core services.
-2. Implement redundancy and failover mechanisms for critical components.
-3. Provide disaster recovery procedures.
+3. **Reliability**
+   - System must recover from Jira/GitHub API failures with automatic retries (3 attempts).
+   - MongoDB must ensure data consistency with transactions for critical operations.
 
-## Performance
-1. Vector search queries must return results in <500ms for 95% of requests.
-2. Agent orchestration workflows must complete within 2 seconds for simple tasks.
-3. Conversational AI responses must be generated in <1 second for 90% of queries.
+4. **Security**
+   - All API endpoints must enforce OAuth 2.0 authentication.
+   - Sensitive data (e.g., Jira credentials) must be encrypted at rest and in transit.
+   - File uploads must be scanned for malware before storage.
 
-## Observability
-1. Implement logging for all system components (agents, workflows, APIs).
-2. Provide metrics for performance, error rates, and usage.
-3. Support distributed tracing for request flows.
+5. **Maintainability**
+   - Codebase must follow modular design principles (separation of concerns).
+   - API documentation must be auto-generated (e.g., Swagger/OpenAPI).
+   - MongoDB schema must include indexes for frequently queried fields.
 
-## Maintainability
-1. Modular architecture with clear separation of concerns.
-2. Comprehensive documentation for all APIs and components.
-3. Automated testing pipelines for regression prevention.
-
----
+6. **Usability**
+   - API responses must follow RESTful conventions (JSON format, standard HTTP status codes).
+   - Error messages must be descriptive and actionable for developers.
 
 # Workflow Requirements
+1. **Jira Sync Workflow**
+   - Trigger manual sync via API or schedule automatic sync (hourly/daily).
+   - Validate Jira data before insertion into MongoDB (e.g., required fields, format).
+   - Handle conflicts (e.g., duplicate Jira IDs) with merge or overwrite strategies.
 
-## Agent Orchestration Workflow
-1. Define agent roles, tools, and communication protocols.
-2. Execute reflection loops for agent self-evaluation.
-3. Monitor and log agent interactions and decisions.
-4. Handle tool execution failures with retry mechanisms.
+2. **Artifact Upload Workflow**
+   - Validate file type and size before storage (e.g., PNG/JPEG for screenshots, < 10MB).
+   - Generate unique IDs and version numbers for artifacts.
+   - Associate artifacts with user stories or bugs via metadata.
 
-## Vector Search Workflow
-1. Document ingestion pipeline with format detection and chunking.
-2. Embedding generation with configurable models.
-3. Hybrid retrieval combining vector and keyword search.
-4. Result ranking and metadata filtering.
+3. **GitHub Linking Workflow**
+   - Validate GitHub commit/PR references before linking to user stories.
+   - Update user story status automatically on GitHub events (e.g., PR merged → "Done").
+   - Log failed linking attempts for manual review.
 
-## Prompt Routing Workflow
-1. Template selection based on context and intent.
-2. Dynamic variable injection from conversation history.
-3. Prompt chaining for multi-step reasoning.
-4. Response evaluation and feedback collection.
+4. **Test Documentation Workflow**
+   - Validate screenshot uploads (e.g., file type, size).
+   - Associate screenshots with test cases or bugs via metadata.
+   - Support bulk uploads for regression testing.
 
-## Workflow Automation Workflow
-1. Event trigger detection and validation.
-2. Task execution with conditional branching.
-3. Parallel processing of independent tasks.
-4. Monitoring and alerting for workflow failures.
-
-## Conversational AI Workflow
-1. Session initialization with user context.
-2. Multi-turn conversation handling with memory.
-3. Intent detection and response generation.
-4. Session persistence and state management.
-
----
+5. **User Assignment Workflow**
+   - Validate assignee existence (e.g., check against team roster).
+   - Enforce role-based permissions (e.g., only Scrum Masters can reassign tasks).
+   - Log assignment changes for audit purposes.
 
 # Database Requirements
+1. **Collections**
+   - `user_stories`: Store Jira user stories with metadata (e.g., `jiraId`, `title`, `status`, `assignee`).
+   - `tasks`: Store sub-tasks linked to user stories (e.g., `userStoryId`, `predictedTime`).
+   - `bugs`: Store bugs linked to user stories (e.g., `userStoryId`, `severity`, `screenshots`).
+   - `artifacts`: Store code snippets, design docs, and test screenshots (e.g., `type`, `fileUrl`, `version`).
+   - `test_screenshots`: Store test screenshots with descriptions (e.g., `userStoryId`, `bugId`, `imageUrl`).
+   - `epics`: Store Jira Epics (e.g., `jiraId`, `title`, `projectId`).
+   - `projects`: Store project metadata (e.g., `jiraId`, `name`, `sprints`).
 
-## Vector Database
-1. Support for high-dimensional vector storage (up to 1536 dimensions).
-2. Hybrid search capabilities (vector + keyword).
-3. Metadata filtering and faceted search.
-4. Horizontal scaling and replication.
-5. Backup and restore functionality.
+2. **Indexes**
+   - Create indexes for frequently queried fields (e.g., `jiraId`, `userStoryId`, `assignee`, `status`).
+   - Ensure compound indexes for common query patterns (e.g., `userStoryId + status`).
 
-## Relational Database
-1. Store user accounts, permissions, and session data.
-2. Track workflow execution history and logs.
-3. Maintain prompt templates and versions.
-4. Support ACID transactions for critical operations.
+3. **Data Retention**
+   - Archive inactive user stories and artifacts after 12 months.
+   - Retain audit logs (e.g., assignment changes) for 24 months.
 
-## Document Store
-1. Store raw documents and processed chunks.
-2. Track document metadata and ingestion status.
-3. Support versioning and access control.
-
----
+4. **Backup and Recovery**
+   - Schedule daily MongoDB backups with point-in-time recovery.
+   - Test backup restoration quarterly.
 
 # API Requirements
+1. **Jira Integration API**
+   - `POST /api/jira/sync`: Trigger manual sync of Jira data.
+   - `POST /api/jira/webhook`: Receive real-time Jira updates via webhook.
+   - `GET /api/jira/user-stories`: List user stories with filters (e.g., `sprint`, `assignee`).
+   - `GET /api/jira/epics`: Retrieve Epics for a project.
 
-## Agent Orchestration API
-1. Endpoints for agent creation, management, and monitoring.
-2. Tool execution and reflection APIs.
-3. Inter-agent communication interfaces.
+2. **Artifact Management API**
+   - `POST /api/artifacts/upload`: Upload an artifact (code snippet, design doc, screenshot).
+   - `GET /api/artifacts/{id}`: Retrieve an artifact by ID.
+   - `GET /api/artifacts/user-story/{id}`: List artifacts for a user story.
 
-## Vector Search API
-1. Document ingestion and embedding generation endpoints.
-2. Search query endpoints with hybrid retrieval support.
-3. Metadata filtering and result ranking APIs.
+3. **GitHub Integration API**
+   - `POST /api/github/link`: Link a GitHub commit/PR to a user story.
+   - `GET /api/github/user-story/{id}`: Get GitHub links for a user story.
 
-## Prompt Routing API
-1. Prompt template management endpoints.
-2. Dynamic prompt generation and chaining APIs.
-3. Evaluation and feedback collection endpoints.
+4. **Test Documentation API**
+   - `POST /api/tests/upload-screenshot`: Upload a test screenshot with description.
+   - `GET /api/tests/user-story/{id}`: Get test screenshots for a user story.
 
-## Workflow Automation API
-1. Workflow definition and execution endpoints.
-2. Event trigger management APIs.
-3. Monitoring and logging endpoints.
-
-## Conversational AI API
-1. Session management endpoints.
-2. Real-time chat interfaces via WebSocket.
-3. Context and memory management APIs.
-
-## Authentication and Authorization
-1. OAuth 2.0 and OpenID Connect support.
-2. Role-based access control (RBAC) for all endpoints.
-3. API key management for service-to-service communication.
-
----
+5. **User and Time Tracking API**
+   - `POST /api/user-stories/{id}/assign`: Assign a user story to a team member.
+   - `POST /api/user-stories/{id}/time`: Log time spent on a user story.
+   - `GET /api/reports/sprint-effort`: Generate sprint-wise effort reports.
 
 # Authentication Requirements
-1. Implement OAuth 2.0 with OpenID Connect for user authentication.
-2. Support multi-factor authentication (MFA) for admin access.
-3. Enforce role-based access control (RBAC) across all components.
-4. Provide API key authentication for service accounts.
-5. Integrate with enterprise identity providers (e.g., Active Directory, Okta).
-6. Implement session management with token expiration and refresh.
+1. **OAuth 2.0**
+   - All API endpoints must enforce OAuth 2.0 authentication.
+   - Use JWT tokens with a 1-hour expiry for API access.
+   - Support refresh tokens for long-lived sessions.
 
----
+2. **Jira and GitHub Integration**
+   - Store Jira and GitHub API credentials in an encrypted secrets manager.
+   - Use OAuth 2.0 for Jira and GitHub API authentication.
+
+3. **Role-Based Access Control (RBAC)**
+   - Define roles: `Developer`, `QA`, `Scrum Master`, `Admin`.
+   - Restrict sensitive operations (e.g., reassigning tasks) to `Scrum Master` and `Admin`.
 
 # Validation Requirements
-1. Validate all API inputs against defined schemas.
-2. Implement rate limiting to prevent abuse.
-3. Validate document formats during ingestion.
-4. Verify vector database query results for relevance and accuracy.
-5. Validate prompt templates for syntax and variable completeness.
-6. Test agent workflows for logical consistency and error handling.
+1. **Jira Data Validation**
+   - Validate `jiraId` format (e.g., `US-123`).
+   - Ensure required fields (e.g., `title`, `status`) are present.
+   - Reject invalid status values (e.g., "In Review" if not in allowed list).
 
----
+2. **Artifact Validation**
+   - Validate file types (e.g., `.png`, `.jpg`, `.pdf`, `.txt`).
+   - Enforce size limits (e.g., < 10MB for screenshots).
+   - Reject malformed metadata (e.g., missing `userStoryId`).
+
+3. **GitHub Linking Validation**
+   - Validate GitHub commit/PR references (e.g., `owner/repo#123`).
+   - Reject invalid or non-existent references.
+
+4. **User Assignment Validation**
+   - Validate assignee existence (e.g., check against team roster).
+   - Reject assignments to inactive users.
+
+5. **Time Tracking Validation**
+   - Validate time entries (e.g., positive numbers, < 24 hours per day).
+   - Reject duplicate time logs for the same task.
 
 # Security Requirements
-1. Encrypt data at rest (AES-256) and in transit (TLS 1.2+).
-2. Implement network segmentation and firewall rules.
-3. Conduct regular security audits and penetration testing.
-4. Enforce least privilege access for all components.
-5. Implement audit logging for all security-relevant events.
-6. Support data anonymization for sensitive information.
-7. Comply with GDPR, CCPA, and other relevant regulations.
+1. **Data Protection**
+   - Encrypt sensitive data (e.g., Jira credentials) at rest using AES-256.
+   - Use TLS 1.2+ for all API communications.
 
----
+2. **API Security**
+   - Rate-limit API endpoints (e.g., 100 requests/minute per user).
+   - Validate all API inputs to prevent injection attacks (e.g., NoSQL injection).
+
+3. **File Upload Security**
+   - Scan all uploaded files for malware before storage.
+   - Store files in a secure, isolated storage system (e.g., AWS S3 with restricted access).
+
+4. **Audit Logging**
+   - Log all API requests (e.g., user, endpoint, timestamp, status).
+   - Log sensitive operations (e.g., user assignments, artifact deletions).
+
+5. **Compliance**
+   - Comply with GDPR for user data (e.g., right to erasure).
+   - Implement data retention policies (e.g., archive inactive data after 12 months).
 
 # Error Handling Requirements
-1. Provide meaningful error messages without exposing sensitive information.
-2. Implement retry mechanisms for transient failures.
-3. Log all errors with context for debugging.
-4. Support graceful degradation during partial outages.
-5. Provide fallback mechanisms for critical workflows.
-6. Implement circuit breakers for external service dependencies.
+1. **API Error Responses**
+   - Return standard HTTP status codes (e.g., `400 Bad Request`, `401 Unauthorized`, `500 Internal Server Error`).
+   - Include error details in JSON format (e.g., `{ "error": "Invalid Jira ID format", "code": "VALIDATION_ERROR" }`).
 
----
+2. **Jira Sync Errors**
+   - Log failed sync attempts with error details (e.g., Jira API rate limit exceeded).
+   - Notify admins via email for critical failures (e.g., 3 consecutive sync failures).
+
+3. **Artifact Upload Errors**
+   - Reject invalid files with descriptive error messages (e.g., "File type not allowed").
+   - Log failed uploads for manual review.
+
+4. **GitHub Linking Errors**
+   - Log failed linking attempts (e.g., invalid GitHub reference).
+   - Notify users of failed status updates (e.g., "Failed to update user story status").
+
+5. **Database Errors**
+   - Handle MongoDB connection failures with retries (3 attempts).
+   - Log database errors (e.g., duplicate key violations) for debugging.
 
 # Performance Requirements
-1. Vector search must support 10,000+ queries per second.
-2. Agent orchestration must handle 1,000+ concurrent workflows.
-3. Conversational AI must support 10,000+ concurrent sessions.
-4. API response times must be <200ms for 95% of requests.
-5. System must recover from failures within 5 minutes.
+1. **Response Time**
+   - API endpoints must respond within 500ms for 95% of requests.
+   - Jira sync must complete within 5 minutes for 1,000+ items.
 
----
+2. **Throughput**
+   - Support 100+ concurrent API requests per second.
+   - Handle 1,000+ artifact uploads per hour.
+
+3. **Database Performance**
+   - MongoDB queries must execute within 100ms for 90% of requests.
+   - Ensure indexes are optimized for common query patterns.
+
+4. **Scalability**
+   - MongoDB must support horizontal scaling (sharding) for large datasets.
+   - API must support load balancing for high availability.
 
 # Testing Requirements
+1. **Unit Testing**
+   - Test individual API endpoints with mock data.
+   - Validate MongoDB schema and query performance.
 
-## Unit Testing
-1. Test individual components (agents, prompts, workflows) in isolation.
-2. Achieve 90%+ code coverage for core modules.
-3. Mock external dependencies for reliable testing.
+2. **Integration Testing**
+   - Test Jira ↔ Scrum Interface sync with real Jira data.
+   - Validate GitHub linking with real GitHub repositories.
 
-## Integration Testing
-1. Test interactions between agents, vector search, and workflows.
-2. Validate API contracts and data flows.
-3. Test error handling and recovery mechanisms.
+3. **End-to-End Testing**
+   - Test full workflows (e.g., Jira sync → artifact upload → GitHub linking).
+   - Validate time tracking and reporting.
 
-## System Testing
-1. End-to-end testing of complete workflows.
-2. Performance testing under load.
-3. Security testing (penetration testing, vulnerability scanning).
+4. **Performance Testing**
+   - Load test API endpoints with 100+ RPS.
+   - Stress test MongoDB with 10,000+ user stories.
 
-## User Acceptance Testing
-1. Validate conversational AI with real users.
-2. Test workflow automation with business processes.
-3. Verify search relevance and accuracy.
+5. **Security Testing**
+   - Penetration test API endpoints for vulnerabilities (e.g., injection attacks).
+   - Validate OAuth 2.0 authentication and RBAC.
 
-## AI-Specific Testing
-1. Hallucination testing for LLM responses.
-2. Prompt evaluation for accuracy and relevance.
-3. Retrieval validation for vector search.
-
----
+6. **User Acceptance Testing (UAT)**
+   - Validate with Scrum teams for usability and workflow fit.
+   - Test with real-world data (e.g., 1,000+ user stories).
 
 # Acceptance Criteria
-1. All core modules (agent orchestration, vector search, prompt routing, workflow automation, conversational AI) are fully functional and integrated.
-2. System meets all performance, scalability, and availability targets.
-3. Security requirements are implemented and validated.
-4. APIs are documented and versioned.
-5. Error handling and logging are comprehensive.
-6. User interfaces are responsive and accessible.
-7. All testing requirements are met with passing results.
-8. Documentation is complete and accurate.
-9. System is deployed in a production-ready environment with monitoring and alerting.
-10. Compliance with enterprise governance policies is verified.
+1. **Jira Integration**
+   - Epics, User Stories, Tasks, and Bugs sync from Jira to MongoDB without data loss.
+   - Real-time updates via webhooks are processed within 1 second.
+   - Filtering by sprint, status, or assignee returns accurate results.
 
----
+2. **Artifact Management**
+   - Code snippets, design docs, and screenshots are stored and retrievable.
+   - Artifacts are correctly associated with user stories or bugs.
+   - Versioning works for updated artifacts.
+
+3. **GitHub Integration**
+   - GitHub commits/PRs are linked to user stories and update status automatically.
+   - Branch naming conventions are enforced.
+
+4. **Bug and Issue Tracking**
+   - Bugs are linked to user stories and include screenshots/descriptions.
+   - Bug status updates sync with Jira.
+
+5. **Test Documentation**
+   - Test screenshots are stored with descriptions and linked to test cases or bugs.
+   - Screenshots are searchable by user story or bug ID.
+
+6. **User Assignment and Time Tracking**
+   - User stories and tasks are assignable to team members.
+   - Predicted vs. actual time is tracked and reportable.
+
+7. **Epic and Project Management**
+   - Epics and projects are retrievable from Jira and associated with user stories.
+   - Filtering by Epic or project returns accurate results.
+
+8. **Non-Functional**
+   - API responds within 500ms for 95% of requests.
+   - MongoDB supports 10,000+ user stories without performance degradation.
+   - OAuth 2.0 authentication and RBAC are enforced.
+   - All uploaded files are scanned for malware.
+```

@@ -1,226 +1,165 @@
-Here’s the structured output of **professional, actionable user stories** aligned with the **AI Platform Constitution** and **Feature Specification**:
+Here’s the structured output based on your inputs:
 
 ---
 
 # User Stories
 
-## Agent Orchestration
-1. **As an** AI Developer,
-   **I want** to define and register autonomous agents with distinct roles (e.g., planner, executor, validator),
-   **So that** agents can collaborate to solve complex tasks without manual intervention.
+## Jira Integration
+**US-001: Sync User Stories from Jira**
+As a Scrum team member, I want the system to automatically sync user stories from Jira to MongoDB so that I can manage them in the Scrum Interface without manual entry.
+*Priority: High | Sprint: 1 | Assignee: Backend Developer*
 
-2. **As an** AI Developer,
-   **I want** to integrate tool-calling capabilities (e.g., APIs, databases, calculators) into agents,
-   **So that** agents can dynamically interact with external systems during workflows.
+**US-002: Sync Tasks and Bugs from Jira**
+As a Scrum team member, I want the system to sync tasks and bugs from Jira to MongoDB so that I can track all work items in one place.
+*Priority: High | Sprint: 1 | Assignee: Backend Developer*
 
-3. **As an** AI Developer,
-   **I want** to implement reflection loops for agents to self-evaluate and improve decisions,
-   **So that** agent accuracy and reliability improve over time.
+**US-003: Real-Time Jira Updates via Webhook**
+As a Scrum Master, I want the system to receive real-time updates from Jira via webhooks so that changes (e.g., status updates) are reflected immediately in the Scrum Interface.
+*Priority: High | Sprint: 1 | Assignee: Backend Developer*
 
-4. **As an** AI Developer,
-   **I want** to monitor agent interactions and task execution via a centralized dashboard,
-   **So that** I can debug failures and optimize performance.
+**US-004: Retrieve Epic and Project Metadata from Jira**
+As a Product Owner, I want the system to fetch Epic and project metadata from Jira so that I can associate user stories with their parent Epics and projects.
+*Priority: Medium | Sprint: 2 | Assignee: Backend Developer*
 
-5. **As a** System Administrator,
-   **I want** to suspend, resume, or terminate agents via an API,
-   **So that** I can manage system resources and agent lifecycles.
-
----
-
-## Vector Search & RAG
-6. **As a** Data Engineer,
-   **I want** to ingest and chunk documents (PDF, DOCX, TXT) into semantic segments,
-   **So that** the system can generate embeddings for efficient retrieval.
-
-7. **As a** Data Engineer,
-   **I want** to generate embeddings using configurable models (e.g., Sentence-BERT, OpenAI),
-   **So that** documents are indexed for hybrid search.
-
-8. **As a** Data Engineer,
-   **I want** to store and retrieve vectors in a scalable database (Qdrant/FAISS/ChromaDB),
-   **So that** the system supports millions of embeddings with low-latency queries.
-
-9. **As a** Data Scientist,
-   **I want** to perform hybrid retrieval (vector + keyword) with metadata filtering,
-   **So that** search results are precise and contextually relevant.
-
-10. **As a** Data Scientist,
-    **I want** to rank search results using semantic similarity and BM25,
-    **So that** users receive the most relevant documents for their queries.
+**US-005: Filter Jira Data by Sprint, Status, or Assignee**
+As a Scrum team member, I want to filter user stories, tasks, and bugs by sprint, status, or assignee so that I can focus on relevant work items.
+*Priority: Medium | Sprint: 2 | Assignee: Backend Developer*
 
 ---
 
-## Prompt Routing
-11. **As an** AI Developer,
-    **I want** to create and manage dynamic prompt templates with variable injection,
-    **So that** prompts adapt to user context and intent.
+## Artifact Management
+**US-006: Upload Code Snippets and Design Documents**
+As a Developer, I want to upload code snippets and design documents to the Scrum Interface so that I can associate them with user stories for traceability.
+*Priority: High | Sprint: 2 | Assignee: Backend Developer*
 
-12. **As an** AI Developer,
-    **I want** to chain prompts for multi-step reasoning (e.g., "summarize → analyze → recommend"),
-    **So that** complex tasks are broken into manageable LLM interactions.
+**US-007: Version Artifacts**
+As a Developer, I want the system to version artifacts (e.g., code snippets, design docs) so that I can track changes over time.
+*Priority: Medium | Sprint: 2 | Assignee: Backend Developer*
 
-13. **As an** AI Developer,
-    **I want** to version and A/B test prompts,
-    **So that** I can optimize performance and accuracy.
+**US-008: Search and Filter Artifacts by User Story or Sprint**
+As a QA Engineer, I want to search and filter artifacts by user story or sprint so that I can quickly find relevant documentation.
+*Priority: Medium | Sprint: 3 | Assignee: Backend Developer*
 
-14. **As an** AI Developer,
-    **I want** to evaluate prompt responses using metrics (e.g., relevance, latency, hallucination rate),
-    **So that** I can refine templates for better outcomes.
-
-15. **As a** Product Owner,
-    **I want** to integrate prompt routing with LLM APIs (OpenAI, Anthropic),
-    **So that** the system generates high-quality responses dynamically.
+**US-009: Link Artifacts to User Stories or Bugs**
+As a Developer, I want to link artifacts (e.g., code snippets, design docs) to user stories or bugs so that I can maintain traceability.
+*Priority: High | Sprint: 2 | Assignee: Backend Developer*
 
 ---
 
-## Workflow Automation
-16. **As an** AI Developer,
-    **I want** to define event-driven workflows (e.g., "on document upload → trigger RAG pipeline"),
-    **So that** tasks execute automatically without manual triggers.
+## GitHub Integration
+**US-010: Link GitHub Commits to User Stories**
+As a Developer, I want to link GitHub commits to user stories so that I can track code changes associated with specific work items.
+*Priority: High | Sprint: 2 | Assignee: Backend Developer*
 
-17. **As an** AI Developer,
-    **I want** to support conditional branching and parallel task execution in workflows,
-    **So that** complex processes are handled efficiently.
+**US-011: Link GitHub Pull Requests to User Stories**
+As a Developer, I want to link GitHub pull requests to user stories so that I can track code reviews and merges.
+*Priority: High | Sprint: 2 | Assignee: Backend Developer*
 
-18. **As a** DevOps Engineer,
-    **I want** to monitor workflow execution with logging and alerts,
-    **So that** I can detect and resolve failures proactively.
+**US-012: Automatically Update User Story Status on GitHub Events**
+As a Scrum Master, I want the system to automatically update the status of a user story when a GitHub event occurs (e.g., PR merged) so that I don’t have to manually track progress.
+*Priority: Medium | Sprint: 3 | Assignee: Backend Developer*
 
-19. **As a** DevOps Engineer,
-    **I want** to implement retry mechanisms and circuit breakers for workflows,
-    **So that** transient failures are handled gracefully.
-
-20. **As a** System Integrator,
-    **I want** to integrate workflows with external systems via webhooks and APIs,
-    **So that** the platform can interact with enterprise tools (e.g., CRM, ERP).
+**US-013: Enforce Branch Naming Conventions**
+As a Developer, I want the system to enforce branch naming conventions (e.g., `feature/US-123-add-login`) so that I can maintain consistency in the codebase.
+*Priority: Low | Sprint: 3 | Assignee: Backend Developer*
 
 ---
 
-## Conversational AI
-21. **As a** UI Developer,
-    **I want** to build a context-aware chat interface with memory management,
-    **So that** users can have multi-turn conversations without losing context.
+## Bug and Issue Tracking
+**US-014: Log Bugs Linked to User Stories**
+As a QA Engineer, I want to log bugs linked to user stories so that I can track issues associated with specific work items.
+*Priority: High | Sprint: 2 | Assignee: Backend Developer*
 
-22. **As a** UI Developer,
-    **I want** to persist user sessions and state across interactions,
-    **So that** conversations remain coherent over time.
+**US-015: Associate Screenshots with Bugs**
+As a QA Engineer, I want to associate screenshots with bugs so that I can provide visual evidence of issues.
+*Priority: High | Sprint: 2 | Assignee: Backend Developer*
 
-23. **As a** UI Developer,
-    **I want** to implement real-time communication via WebSocket,
-    **So that** users receive instant responses.
-
-24. **As a** Product Owner,
-    **I want** to integrate AI copilot interfaces for task assistance (e.g., "help me draft an email"),
-    **So that** users can offload repetitive tasks to the system.
-
-25. **As a** UX Designer,
-    **I want** to design responsive and accessible chat interfaces,
-    **So that** the system is usable across devices and user needs.
+**US-016: Filter Bugs by User Story, Sprint, or Assignee**
+As a Scrum team member, I want to filter bugs by user story, sprint, or assignee so that I can prioritize and track them effectively.
+*Priority: Medium | Sprint: 3 | Assignee: Backend Developer*
 
 ---
 
-## Non-Functional & Cross-Cutting
-26. **As a** DevOps Engineer,
-    **I want** to containerize all components (agents, APIs, vector DB) using Docker,
-    **So that** the system is portable and scalable.
+## Test Documentation
+**US-017: Upload Test Screenshots with Descriptions**
+As a QA Engineer, I want to upload test screenshots with descriptions so that I can document test cases and results.
+*Priority: High | Sprint: 2 | Assignee: Backend Developer*
 
-27. **As a** Security Engineer,
-    **I want** to encrypt data at rest (AES-256) and in transit (TLS 1.2+),
-    **So that** sensitive information is protected.
+**US-018: Link Test Screenshots to Test Cases or User Stories**
+As a QA Engineer, I want to link test screenshots to test cases or user stories so that I can maintain traceability.
+*Priority: High | Sprint: 2 | Assignee: Backend Developer*
 
-28. **As a** Security Engineer,
-    **I want** to implement OAuth 2.0 and RBAC for all APIs,
-    **So that** access is controlled and auditable.
+**US-019: Search Test Documentation by User Story or Bug ID**
+As a QA Engineer, I want to search test documentation by user story or bug ID so that I can quickly find relevant test artifacts.
+*Priority: Medium | Sprint: 3 | Assignee: Backend Developer*
 
-29. **As a** DevOps Engineer,
-    **I want** to set up observability (logging, metrics, tracing) for all components,
-    **So that** I can monitor performance and debug issues.
+---
 
-30. **As a** Product Owner,
-    **I want** to document all APIs and workflows,
-    **So that** developers and users can integrate with the system easily.
+## User Assignment and Time Tracking
+**US-020: Assign User Stories to Team Members**
+As a Scrum Master, I want to assign user stories to team members so that I can distribute work effectively.
+*Priority: High | Sprint: 1 | Assignee: Backend Developer*
+
+**US-021: Track Predicted vs. Actual Time for Tasks**
+As a Developer, I want to log predicted and actual time spent on tasks so that I can improve sprint planning.
+*Priority: Medium | Sprint: 2 | Assignee: Backend Developer*
+
+**US-022: Generate Sprint-Wise Effort Reports**
+As a Scrum Master, I want to generate sprint-wise effort reports so that I can analyze team productivity and plan future sprints.
+*Priority: Medium | Sprint: 3 | Assignee: Backend Developer*
+
+**US-023: Map Task Dependencies**
+As a Scrum Master, I want to map task dependencies (e.g., blocked tasks) so that I can identify bottlenecks in the sprint.
+*Priority: Low | Sprint: 3 | Assignee: Backend Developer*
 
 ---
 
 # Acceptance Criteria
-1. **Agent Orchestration**:
-   - Agents can be created, registered, and assigned tools via API.
-   - Reflection loops improve agent decisions (validated via test cases).
-   - Dashboard shows real-time agent interactions and task statuses.
 
-2. **Vector Search & RAG**:
-   - Documents are ingested, chunked, and embedded without errors.
-   - Hybrid search returns relevant results (precision > 90% in test queries).
-   - Vector DB scales to 1M+ embeddings with <500ms latency.
+## Jira Integration
+- **AC-001**: The system successfully syncs user stories, tasks, and bugs from Jira to MongoDB without data loss.
+- **AC-002**: Real-time updates from Jira webhooks are processed within 1 second of receipt.
+- **AC-003**: Epics and project metadata are retrievable from Jira and associated with user stories.
+- **AC-004**: Filtering by sprint, status, or assignee returns accurate and up-to-date results.
 
-3. **Prompt Routing**:
-   - Prompt templates support dynamic variables and chaining.
-   - A/B testing shows measurable improvements in response quality.
-   - Evaluation metrics (e.g., relevance score) are logged for each prompt.
+## Artifact Management
+- **AC-005**: Code snippets, design documents, and screenshots are uploadable and retrievable via API.
+- **AC-006**: Artifacts are versioned and linked to user stories or bugs.
+- **AC-007**: Searching and filtering artifacts by user story or sprint returns accurate results.
 
-4. **Workflow Automation**:
-   - Event-driven workflows execute automatically (e.g., document upload → RAG pipeline).
-   - Conditional branching and parallel tasks work as defined.
-   - Failures trigger alerts and retries (validated via chaos testing).
+## GitHub Integration
+- **AC-008**: GitHub commits and pull requests are linkable to user stories.
+- **AC-009**: User story status updates automatically on GitHub events (e.g., PR merged).
+- **AC-010**: Branch naming conventions are enforced for consistency.
 
-5. **Conversational AI**:
-   - Chat interface maintains context across 10+ turns.
-   - WebSocket delivers responses in <1s for 90% of queries.
-   - Copilot interfaces assist with tasks (e.g., drafting emails).
+## Bug and Issue Tracking
+- **AC-011**: Bugs are logged and linked to user stories with severity and status.
+- **AC-012**: Screenshots are associable with bugs for documentation.
+- **AC-013**: Filtering bugs by user story, sprint, or assignee returns accurate results.
 
-6. **Non-Functional**:
-   - System achieves 99.9% uptime in load tests.
-   - Data encryption and RBAC are validated via security audits.
-   - Observability tools capture logs, metrics, and traces for all components.
+## Test Documentation
+- **AC-014**: Test screenshots are uploadable with descriptions and linked to test cases or user stories.
+- **AC-015**: Test documentation is searchable by user story or bug ID.
+
+## User Assignment and Time Tracking
+- **AC-016**: User stories and tasks are assignable to team members.
+- **AC-017**: Predicted and actual time spent on tasks is trackable and reportable.
+- **AC-018**: Sprint-wise effort reports are generated and exportable.
 
 ---
 
 # Security Expectations
-1. **Data Protection**:
-   - All data at rest is encrypted (AES-256).
-   - All data in transit uses TLS 1.2+.
-   - Sensitive fields (e.g., PII) are anonymized in logs.
-
-2. **Access Control**:
-   - OAuth 2.0 and OpenID Connect are enforced for user authentication.
-   - RBAC restricts access to APIs and dashboards.
-   - API keys are rotated automatically every 90 days.
-
-3. **Audit & Compliance**:
-   - All security-relevant events (e.g., login attempts, data access) are logged.
-   - Regular penetration testing and vulnerability scans are conducted.
-   - Compliance with GDPR, CCPA, and enterprise policies is verified.
-
-4. **Infrastructure Security**:
-   - Network segmentation isolates critical components (e.g., vector DB, agent orchestration).
-   - Firewall rules restrict inbound/outbound traffic to necessary ports.
-   - Container images are scanned for vulnerabilities before deployment.
+- **SEC-001**: All API endpoints enforce OAuth 2.0 authentication with JWT tokens.
+- **SEC-002**: Sensitive data (e.g., Jira credentials) is encrypted at rest and in transit.
+- **SEC-003**: File uploads are scanned for malware before storage.
+- **SEC-004**: Role-based access control (RBAC) restricts sensitive operations (e.g., reassigning tasks) to authorized roles.
+- **SEC-005**: Audit logs track all API requests and sensitive operations (e.g., user assignments, artifact deletions).
 
 ---
 
 # Validation Expectations
-1. **Unit Testing**:
-   - 90%+ code coverage for core modules (agents, prompts, workflows).
-   - Mock external dependencies (e.g., LLM APIs, vector DB) for reliable tests.
-
-2. **Integration Testing**:
-   - Test interactions between agents, vector search, and workflows.
-   - Validate API contracts and data flows (e.g., prompt → LLM → response).
-   - Test error handling (e.g., LLM timeouts, vector DB failures).
-
-3. **System Testing**:
-   - End-to-end workflows (e.g., "upload document → search → generate report") are tested.
-   - Load testing validates performance under 10,000+ concurrent users.
-   - Security testing (e.g., penetration tests, vulnerability scans) is passed.
-
-4. **AI-Specific Testing**:
-   - Hallucination testing ensures LLM responses are factually accurate.
-   - Prompt evaluation measures relevance, latency, and coherence.
-   - Retrieval validation confirms vector search returns correct documents.
-
-5. **User Acceptance Testing (UAT)**:
-   - Real users test conversational AI for usability and context retention.
-   - Business stakeholders validate workflow automation for enterprise processes.
-   - Search relevance is rated >4/5 by domain experts.
-
----
+- **VAL-001**: Jira data is validated for required fields (e.g., `jiraId`, `title`, `status`) before insertion into MongoDB.
+- **VAL-002**: Artifact uploads are validated for file type and size (e.g., < 10MB for screenshots).
+- **VAL-003**: GitHub references (e.g., commits, PRs) are validated before linking to user stories.
+- **VAL-004**: User assignments are validated against a team roster to ensure assignee existence.
+- **VAL-005**: Time entries are validated for positive numbers and realistic values (e.g., < 24 hours per day).
